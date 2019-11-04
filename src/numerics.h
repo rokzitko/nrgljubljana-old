@@ -123,7 +123,7 @@ void matrix_replicate_l_from_u(Matrix &m)
 // symmetric Hamiltonian matrix. In FORTRAN convention, this is the lower
 // part !!
 
-CONSTFNC void check_is_matrix_upper(const Matrix &m)
+void check_is_matrix_upper(const Matrix &m)
 {
   my_assert(m.size1() == m.size2() && m.size1() >= 1);
   for (size_t i = 1; i < m.size1(); i++)
@@ -132,7 +132,7 @@ CONSTFNC void check_is_matrix_upper(const Matrix &m)
 }
 
 // Assert that two matrices are equal.
-CONSTFNC void check_are_matrices_equal(const Matrix &m1, const Matrix &m2)
+void check_are_matrices_equal(const Matrix &m1, const Matrix &m2)
 {
    my_assert(m1.size1() == m2.size1());
    my_assert(m1.size2() == m2.size2());
