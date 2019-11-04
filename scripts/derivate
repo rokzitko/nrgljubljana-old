@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+# Take a numerical derivative of a function represented as a table
+# Rok Zitko, rok.zitko@ijs.si, March 2008
+# $Id$
+
+my ($prevx, $prevy);
+my $cnt = 0;
+
+while (<>) {
+  chomp;
+  my @d = split;
+  my $x = $d[0];
+  my $y = $d[1];
+  
+  if ($cnt != 0) {
+    my $derivative = ($y - $prevy)/($x - $prevx);
+    my $xavg = ($x + $prevx)/2.0;
+    
+    print "$xavg $derivative\n";
+  }
+  
+  $prevx = $x;
+  $prevy = $y;
+  $cnt++;
+}

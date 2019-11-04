@@ -1,0 +1,12 @@
+#!/usr/bin/env perl
+
+my @dirs = <[1-9]*>;
+
+foreach (@dirs) {
+  my $dir = $_;
+  if (-e $dir && !-e "$dir/DONE") {
+    chdir $dir;
+    system "nrgrun";
+    chdir "..";
+  }
+}

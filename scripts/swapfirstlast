@@ -1,0 +1,20 @@
+#!/usr/bin/perl
+# Swap first and last columns in tabulated data
+# Rok Zitko, rok.zitko@ijs.si, Apr 2008
+
+while (<>) {
+    if (!/^#/) {
+	my $line = $_;
+	chomp($line);
+	$line =~ s/^\s+//;
+	$line =~ s/\s+$//;
+	@vals = split(/ /,$line);
+	my $last = @vals[-1];
+	my $first = @vals[0];
+	@vals[0] = $last;
+	@vals[-1] = $first;
+	print "@vals\n";
+    } else {
+	print;
+    }
+}

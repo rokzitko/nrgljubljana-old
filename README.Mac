@@ -1,0 +1,18 @@
+See the web page
+
+http://pages.uoregon.edu/noeckel/Mathematica.html
+
+for instructions on running Mathematica from the command line,
+as required by the "nrginit" script in NRG Ljubljana.
+
+Also, one can add the following two line script named "math"
+to your /usr/local/bin:
+
+#!/bin/sh
+/Applications/Mathematica.app/Contents/MacOS/MathKernel "$@"
+
+
+
+I thank Michael Sentef for contributing these tips.
+
+Rok Zitko

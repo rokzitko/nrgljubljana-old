@@ -1,0 +1,51 @@
+#!/usr/bin/env perl
+# Mirror a tabulated function with respect to the x=0 axis
+# On input, we expect a data set containing only positive x values.
+# The x=0 data point, if present, is not duplicated.
+# On output, there are data points for all x, negative and positive.
+# Rok Zitko, rok.zitko@ijs.si, August 2009
+
+use warnings;
+use strict;
+
+# Read all data (from stdio, or from files given as the arguments)
+
+my @data;
+
+while (<>) {
+    if (/^#/) { next; }
+    chomp;
+    my @vals = split;
+    push (@data, [@vals]);
+}
+
+# Negative x points
+
+my $nr = @data;
+
+for (my $i = $nr-1; $i >= 0; $i--) {
+    my $len = @{ $data[$i] };
+    for (my $col = 0; $col < $len; $col++) {
+	my $val = $data[$i]->[$col];
+	if ($col == 0) {
+	    $val = -$val;
+	}
+	print $val;
+	if ($col != $len-1) { print " "; }
+    }
+    print "\n";
+}
+
+# Positive x points
+
+my $first = ($data[0]->[0] == 0 ? 1 : 0);
+
+for (my $i = $first; $i < $nr; $i++) {
+    my $len = @{ $data[$i] };
+    for (my $col = 0; $col < $len; $col++) {
+	my $val = $data[$i]->[$col];
+	print $val;
+	if ($col != $len-1) { print " "; }
+    }
+    print "\n";
+}

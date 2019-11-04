@@ -1,0 +1,27 @@
+#!/usr/bin/env perl
+# Computes xi(n) coeffcients for given Lambda
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, Sept 2008
+
+use warnings;
+use strict;
+#use Math;
+
+if (@ARGV != 1) {
+  die "Usage: wilsonxi <Lambda>\n";
+}
+
+my $l = $ARGV[0];
+
+print "Lambda=$l\n";
+my $x = 0.5 * (1.0+($l ** -1));
+print "1/2(1+Lambda^-1)=faktor^-1=$x\n";
+my $faktor = 1.0/$x;
+print "faktor=$faktor\n";
+
+my $n;
+for ($n = 0; $n < 10; $n++) {
+    my $xin = (1.0-$l**(-$n-1)) * (1.0-$l**(-2*$n-1))**(-0.5) *
+       (1.0-$l**(-2*$n-3))**(-0.5);
+    my $hop = $x * $l**(-$n/2) * $xin;
+    print "$n $xin $hop\n";
+}

@@ -1,0 +1,26 @@
+#!/usr/bin/env perl
+# Calculate mean of a series of values. Estimate error.
+# Rok Zitko,zitko@theorie.physik.uni-goettingen.de, Oct 2008
+# RZ, March 2009
+
+use strict;
+use warnings;
+
+my $sum = 0.0;
+my $sum2 = 0.0;
+my $cnt = 0;
+
+while (<>) {
+  $sum += $_;
+  $sum2 += $_ * $_;
+  $cnt++;
+}
+
+my $mean = $sum/$cnt;
+my $var = $sum2/$cnt - $mean*$mean;
+$var = ($var > 0 ? $var : 0);
+# Unbiased estimator for sample standard deviation
+my $sigma = sqrt($cnt/($cnt-1)) * sqrt($var);
+my $error = $sigma/sqrt($cnt);
+
+print "$mean $error\n";

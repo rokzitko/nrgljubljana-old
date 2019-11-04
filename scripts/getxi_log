@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+# Extract discretization parameters from "log" file
+# Rok Zitko, rok.zitko@ijs.si, May 2009
+
+open(F, "<log") or die "Can't open the log file.";
+open(X, ">xi") or die "Can't open xi for writing.";
+
+while(<F>) {
+  if (/^  xi\([0-9]+\)=\s+\S+ --> \s+(\S+)$/) {
+      print;
+      print X "$1\n";
+  }
+}
+
+close(F);
+close(X);

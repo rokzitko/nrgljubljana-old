@@ -1,0 +1,22 @@
+#!/usr/bin/env perl
+# Calculate errors for consecutively numbered files with a given suffic.
+# Script 'err' is used to compute the errors.
+# Rok Zitko, rok.zitko@ijs.si, May 2009
+
+use strict;
+use warnings;
+
+my $suffix = shift;
+
+my $i = 1;
+
+while (1) {
+    my $next = $i+1;
+    my $fn1 = "$i$suffix";
+    my $fn2 = "$next$suffix";
+    -e $fn1 or exit;
+    -e $fn2 or exit;
+    chomp(my $error = `err $fn1 $fn2`);
+    print "$next $error\n";
+    $i = $i + 1;
+}

@@ -1,0 +1,17 @@
+#!/usr/bin/env perl
+# Integral of the (absolute value of) difference between two spectra
+# Rok Zitko, rok.zitko@ijs.si, March 2009
+
+use strict;
+use warnings;
+
+my $fn1 = shift;
+my $fn2 = shift;
+
+-e $fn1 or die "intdiff: $fn1 does not exist.\n";
+-e $fn2 or die "intdiff: $fn2 does not exist.\n";
+
+my $diff = `subtracty $fn1 $fn2 | integrateabs`;
+chomp($diff);
+
+print "$diff\n";

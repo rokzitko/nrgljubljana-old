@@ -1,0 +1,14 @@
+"The only two kinds of comments that are acceptable for completed
+code are intent and summary comments."
+
+"A good name for a routine clearly describes everything the routine does."
+
+------------------------------------------------------------------------
+
+TO DO list:
+
+- better data hiding (encapsulation)
+- remove any offset 1 arithmetics [this could lead to bugs, so what to do?]
+- impurity operator sequence {d,a,b,c,e}. Fix it!
+- perform (temp files) cleanup in case of aborting due to some error.
+

@@ -1,0 +1,23 @@
+#!/usr/bin/perl
+# Scale all values in a file by a factor given on command line
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, April 2008
+
+if (@ARGV != 1) {
+    die "Usage: scaleall <factor>\n";
+}     
+
+my $factor = $ARGV[0];
+
+while (<STDIN>) {
+  if (!/^#/) {
+    chomp;
+    @d = split;
+    for ($i = 0; $i < @d; $i++) {
+      @d[$i] = @d[$i] * $factor;
+    }
+    
+    print "@d\n";
+  } else {
+    print;
+  }
+}

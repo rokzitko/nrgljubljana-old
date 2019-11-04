@@ -1,0 +1,15 @@
+Rok Zitko, rok.zitko AT ijs.si
+"Jozef Stefan" Institute
+Jamova 39
+SI-1000 Ljubljana
+Slovenia
+
+
+Oliver Bodensiek (Goettingen University, Germany) contributed the code
+for the discretization of superconducting continuum channels.
+
+Marcus Greger (Augsburg University, Germany) contributed the optimized
+routines for the calculation of spectral functions.
+
+Ziga Osolin ("Jozef Stefan" Institute, Ljubljana) contributed Pade analytical
+continuation code and a nice set of Python DMFT scripts.

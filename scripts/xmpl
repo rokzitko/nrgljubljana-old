@@ -1,0 +1,42 @@
+#!/usr/bin/env perl
+# Plot chosen columns of a file using xmgrace
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, Nov 2008
+
+use warnings;
+use POSIX;
+
+if (@ARGV != 3) {
+    die "Usage: xmpl <col1> <col2> <filename>\n";
+}
+
+my $pid = getpid();
+my $time = time();
+
+my $tmpfn = "tmp-$pid-$time";
+
+my $col1 = shift;
+my $col2 = shift;
+my $fn = shift;
+
+if (!-e $fn) {
+    die "$fn does not exist.\n";
+}
+
+open(F, "<$fn") or die "Can't open $fn: $!";
+open(OUT, ">$tmpfn") or die "Can't write to $tmpfn: $!";
+
+while (<F>) {
+    next if (/^#/);
+    chomp;
+    my @vals = split;
+    my $x = @vals[$col1-1];
+    my $y = @vals[$col2-1];
+    print OUT "$x $y\n";
+}
+
+close(F);
+close(OUT);
+
+system "xmgrace $tmpfn";
+
+unlink "$tmpfn";

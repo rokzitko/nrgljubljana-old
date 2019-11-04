@@ -1,0 +1,53 @@
+#!/usr/bin/env perl
+# Find a root by linear interpolation of pairs of (x,y) data points
+# Rok Zitko, rok.zitko@ijs.is, March 2009, June 2013
+
+use warnings;
+use strict;
+
+if (@ARGV != 2) {
+  print "Solves f(x)=value for x.\n";
+  die "Usage: findrootlin <filename> <value>\n";
+}
+
+my $fn = shift;
+my $value = shift;
+
+open (F, "<$fn") or die "Can't open $fn, stopped";
+
+my ($xprev, $yprev);
+
+while (<F>) {
+    if (/^#/) {
+	next;
+    }
+    
+    chomp;
+    my @v = split(' ', $_);
+    if (@v < 2) {
+	die "Error: at least two numbers per line are expected, stopped";
+    }
+    my $x = $v[0];
+    my $y = $v[1];
+    
+    if (!defined($xprev)) {
+	$xprev = $x;
+	$yprev = $y;
+	next;
+    }
+    
+    if (($yprev <= $value && $value <= $y) ||
+        (    $y <= $value && $value <= $yprev)) {
+        # Solution is brackted
+	my $slope = ($yprev-$y)/($xprev-$x);
+	my $dx = ($value-$yprev)/$slope;
+	my $solution = $xprev + $dx;
+	print "$solution\n";
+	exit(1);
+    }
+    
+    $xprev = $x;
+    $yprev = $y;
+}
+
+die "No solution.\n";

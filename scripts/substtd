@@ -1,0 +1,31 @@
+#!/usr/bin/env perl
+# Subtract thermodynamic quantities for a model w/o impurity from results
+# for the full model.
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, Nov 2008
+
+use warnings;
+
+if (!-e "clean/") {
+    die "Subdir clean/ does not exist.\n";
+}
+
+my @dirs = <[1-9]*>;
+
+my $fn = "td.dat";
+my $fntmp = "$fn.tmp";
+unlink $fntmp;
+
+foreach (@dirs) {
+    my $dir = $_;
+    if (-d $dir) {
+	-e "$dir/DONE" or die "Not yet: $dir\n";
+	-d "clean/$dir" or die "clean/$dir does not exist. Stopped";
+	-e "clean/$dir/DONE" or die "Not yet: clean/$dir\n";
+	system "subtracty $dir/td clean/$dir/td >>$fntmp";
+    }
+}
+
+if (-e $fntmp) {
+    system "sortnum $fntmp | keeplastcomment >$fn";
+    unlink "$fntmp";
+}

@@ -1,0 +1,48 @@
+#!/usr/bin/perl
+# Mathematica script wrapper
+# Rok Zitko, rzitko@gwdg.de, Jan 2008
+
+if (@ARGV != 3) {
+    print "deriv calculates the derivative at x. Linear fitting is performed in\n";
+    print "the interval [x-a;x+a].\n";
+    die "Usage: deriv <filename> <x> <a>\n";
+}
+
+$fninput = shift;
+$x = shift;
+$a = shift;
+
+use POSIX;
+my $pid = getpid();
+my $time = time();
+my $fn = "unique-$pid-$time.m";
+open(F,">$fn") or die "Can't open $fn for writing.";
+
+# *******************************************************
+print F <<ENDOFSCRIPT;
+
+Print["Loading $fninput"];
+l = Import["$fninput", "Table"];
+l = Select[l, #[[1]] != "#" &];
+l = l[[All, {1,2}]]; (* Keep first two columns only *)
+
+l = Select[l, Abs[ $x-#[[1]] ] <= $a &];
+
+fit = Fit[l, {1, x}, x];
+
+Print[fit];
+
+deriv = D[fit,x];
+derivx = deriv /. x->$x;
+
+Print[derivx];
+
+ENDOFSCRIPT
+# *******************************************************
+
+-e "$fn" or die "Failed!?";
+
+$ENV{'DISPLAY'} = '';
+system("math -batchinput -batchoutput < $fn");
+unlink $fn
+  or die "Can't remove temporary script file $fn.";

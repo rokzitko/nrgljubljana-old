@@ -1,0 +1,50 @@
+#!/usr/bin/env perl
+# Perform Gaussian broadening of delta-peak data,
+# with width proportional to peak energy.
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, Sept 2008
+
+use warnings;
+use strict;
+use Math::Trig;
+
+if (@ARGV != 2) {
+  print "Gaussian broadening, width proportional to energy.\n";
+  die "Usage: $0 <filename> <eta>\n";
+}
+
+my $fn = $ARGV[0];
+my $eta = $ARGV[1];
+
+open(F, "<$fn") or die "Can't open $fn: $!\n";
+
+my @E;
+my @W;
+
+while(<F>) {
+  chomp;
+  /(\S+)\s+(\S+)/;
+  my $e = $1;
+  my $w = $2;
+  push (@E, $e);
+  push (@W, $w);
+}
+
+close(F);
+
+my $len = @E;
+
+# Energy mesh
+for (my $x = -1.5; $x <= 1.5; $x += 0.01) {
+    if (abs($x) < 10**-12) { # skip 0
+	next;
+    }
+    my $y = 0.0;
+      for (my $i = 0; $i < $len; $i++) {
+  	my $e = $E[$i];
+	my $w = $W[$i];
+	my $etaE = $eta * (abs($e)+10**-14);
+	my $P = 1.0/(sqrt(pi)*$etaE) * exp(-($x-$e)**2/$etaE**2);
+	$y += $P * $w;
+    }
+    print "$x $y\n";
+}

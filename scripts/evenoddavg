@@ -1,0 +1,49 @@
+#!/usr/bin/perl
+# Do the even-odd averaging. The first column is assumed to be the independant
+# variable, other columns are dependent variables.
+# Formula from p. 409 of Bulla, Costi, Pruschke, RMP 80 (2008).
+# Rok Zitko, rok.zitko@ijs.si, March 2008, May, Sep 2009
+
+# CHANGE LOG
+# 16.9.2009 - code cleanup
+
+use warnings;
+use strict;
+
+my @data;
+
+while(<>) {
+    !/^#/ or next;
+    chomp;
+    my @vals = split;
+    push(@data, [@vals]);
+}
+
+my $nr = @data;
+
+for (my $n = 1; $n < $nr-1; $n++) {
+    my $tn =  $data[$n]->[0];
+    my $tnp = $data[$n+1]->[0];
+    my $tnn = $data[$n-1]->[0];
+
+    print "$tn ";
+
+    my $len = @{ $data[$n] };
+
+    for (my $col = 1; $col < $len; $col++) {
+        my $on =  $data[$n]->[$col];
+        my $onp = $data[$n+1]->[$col];
+        my $onn = $data[$n-1]->[$col];
+
+	# "The first term (...) is the observable calculated at step N.
+	# The second and third terms are a linear interpolation of the values
+	# at N-1 and N+1 to iteration N."
+        my $y = 0.5*($on + $onp + ($onn - $onp)/($tnn - $tnp)*($tn-$tnp));
+        print "$y";
+
+	if ($col != $len-1) {
+	    print " ";
+	}
+    }
+    print "\n";
+}

@@ -1,0 +1,37 @@
+#!/usr/bin/env perl
+# Omega_N - the NRG scale factor
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, July 2008
+
+use warnings;
+
+if (@ARGV != 2 && @ARGV != 3) {
+  die "Usage: omegan <N> <Lambda> [z].\n";
+}
+
+$N = $ARGV[0];
+$Lambda = $ARGV[1];
+$z = 1.0;
+if (@ARGV == 3) {
+  $z = $ARGV[2];
+}
+
+$DISC = "C";
+
+print "N=$N  Lambda=$Lambda  z=$z  Discretization: $DISC\n";
+
+$factor = 0.0;
+
+$power = $Lambda**(-($N-1.0)/2.0+1.0-$z);
+if ($DISC eq "Y") {
+   $factor = 0.5 * (1.0 + 1.0/$Lambda);
+}
+
+if ($DISC eq "C") {
+  $factor = (1.0 - 1.0/$Lambda)/log($Lambda);
+}
+
+$omegan = $factor * $power;
+
+print "factor=$factor\n";
+print "power=$power\n";
+print "omega_N=$omegan\n";

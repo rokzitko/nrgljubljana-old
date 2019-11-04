@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+# Convert 2D Mathematica list to an ascii table
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, Feb 2008
+# $Id$
+
+$/ = "{";
+
+while(<>) {
+  s/[\{\},\n]//g;
+  s/\*\^/e/g;
+  if ($_) {
+    print "$_\n";
+  }
+}

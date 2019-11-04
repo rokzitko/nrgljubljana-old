@@ -1,0 +1,19 @@
+#!/usr/bin/env perl
+# Filter a file according to a value of a chosen column
+# Usage: splitbyvalue [column] [value]
+# Rok Zitko, rok.zitko@ijs.si, Oct 2009
+
+use strict;
+use warnings;
+
+my $column = shift;
+$column -= 1; # offset
+my $value = shift;
+
+while (<>) {
+  chomp;
+  my @vals = split;
+  if ($vals[$column] eq $value) {
+    print "$_\n";
+  }
+}

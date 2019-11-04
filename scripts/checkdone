@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+# Check if DONE
+# Rok Zitko, rok.zitko@ijs.si, April 2008, Nov 2103
+
+# CHANGE LOG
+# 13.11.2013 - return 0 if done, 1 otherwise
+
+use warnings;
+use strict;
+
+my @dirs = <[1-9]*>;
+
+my $done = 1;
+
+foreach (@dirs) {
+    my $dir = $_;
+    -d $dir or next;
+    if(! -e "$dir/DONE") {
+	print "$dir not done yet.\n";
+	$done = 0;
+    }
+}
+	
+exit(!$done);

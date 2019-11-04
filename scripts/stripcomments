@@ -1,0 +1,7 @@
+#!/usr/bin/env perl
+# Strip comment lines starting with #
+# Rok Zitko, rok.zitko@ijs.si, March 2009
+
+while(<>) {
+  print unless /^#/;
+}

@@ -1,0 +1,6 @@
+#!/bin/sh
+# Clean up all unnecessary files after the NRG calculation
+# Rok Zitko, rok.zitko@ijs.si, March 2012
+find . -iname 'data' -print | xargs rm
+find . -iname 'mmalog' -print | xargs rm
+find . -iname 'log2' -print | xargs rm

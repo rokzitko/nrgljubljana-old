@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+# Kondo temperature calculator
+# Rok Zitko, zitko@theorie.physik.uni-goettigen.de, July 2008
+
+@ARGV == 1 or die "Usage: tkkondo <rhoJ>\n";
+
+my $rhoJ = shift;
+
+print "rho_0 J=$rhoJ\n";
+
+my $tk = sqrt($rhoJ) * exp(-1/$rhoJ);
+
+print "T_K=$tk\n";
+
+$tk = $tk * (1-$rhoJ);
+
+print "T_K=$tk (with Deff correction)\n";
+
+$tk = $tk * exp(1.5824*$rhoJ);
+
+print "T_K=$tk (with Deff correction and next order 1.58y term)\n";

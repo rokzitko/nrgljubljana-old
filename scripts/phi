@@ -1,0 +1,36 @@
+#!/usr/bin/perl
+# Computes n, phi, etc. from epsilon and Gamma
+# Rok Zitko, rok.zitko@ijs.is, June 2008
+
+use Math::Trig;
+use strict;
+use warnings;
+
+if (@ARGV != 2) {
+    die "Usage: phi <epsilon> <Gamma>.\n";
+}
+
+my $epsilon = $ARGV[0];
+my $Gamma = $ARGV[1];
+
+print "epsilon=$epsilon Gamma=$Gamma\n";
+
+# A(0) - spectral function at Fermi level
+my $a0 = 1.0/pi * $Gamma/($epsilon**2 + $Gamma**2);
+
+# G/G_0 - zero-temperature conductance
+my $G = pi * $Gamma * $a0;
+
+# eG - $epsilon/$Gamma
+my $eG = $epsilon/$Gamma;
+
+# n - occupancy (per spin)
+my $n = 1.0 - 2.0/pi * atan($eG);
+
+# delta - phase shift (in units of 1)
+my $delta = pi/2.0 * $n;
+
+# deltapi - delta in units of pi
+my $deltapi = $delta/pi;
+
+print "n=$n   delta=$delta=$deltapi [pi]  G=$G   A(0)=$a0\n";

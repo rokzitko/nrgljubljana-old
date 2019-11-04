@@ -1,0 +1,28 @@
+#!/usr/bin/env perl
+# Calculate error (integral of the absolute value of the difference) of two tabulated functions
+# Rok Zitko, rok.zitko@ijs.si, May 2009
+
+use warnings;
+use strict;
+use POSIX;
+
+my $pid = getpid();
+my $time = time();
+my $fn = "unique-$pid-$time.dat";
+
+my $fn1 = shift;
+my $fn2 = shift;
+
+-e $fn1 or die "$fn1 does not exist.";
+-e $fn2 or die "$fn2 does not exist.";
+
+system "subtracty $fn1 $fn2 >$fn";
+
+-e $fn or die "Subtraction failed.";
+
+my $diff = `integrateabs $fn`;
+chomp($diff);
+
+print "$diff\n";
+
+unlink $fn;

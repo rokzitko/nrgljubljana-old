@@ -1,0 +1,84 @@
+#!/usr/bin/perl
+# diffcalcSQ
+# Calculate differences of a given column in two files as a function
+# of the (common) first column. The second column is squared (SQ)!
+# Part of "NRG Ljubljana".
+# Rok Zitko, rok.zitko@ijs.si, November 2007, Feb 2008
+# $Id: diffplot,v 1.1 2007/11/23 12:19:17 rok Exp rok $
+
+# CHANGE LOG
+# 23.11.2007 - initial version
+# 28.11.2007 - averaging (flag 'a')
+# 14.2.2008 - diffcalcSQ
+# 18.9.2009 - code cleanup
+# 10.3.2011 - verbosity
+
+use warnings;
+
+my $verbose = 0;
+
+my $col   = (@ARGV >= 1 ? $ARGV[0] : "2");
+my $fn1   = (@ARGV >= 2 ? $ARGV[1] : "file1");
+my $fn2   = (@ARGV >= 3 ? $ARGV[2] : "file2");
+my $fnout = (@ARGV >= 4 ? $ARGV[3] : "diff$col.dat");
+
+print "Column: $col\n";
+
+open (F1, "<$fn1") or die "Can't open $fn1: $!\n";
+open (F2, "<$fn2") or die "Can't open $fn2: $!\n";
+
+my $lastline; # last header line
+my $data = 0; # flag - have we encountered numeric data yet
+
+my ($l1, $l2);
+
+while (<F1>) {
+    chomp;
+    if (/^#/) {
+        $lastline = $_;
+    } else {
+        $l1 = $_;
+        last;
+    }
+}
+$verbose && print "1: $lastline\n";
+
+while (<F2>) {
+    chomp;
+    if (/^#/) {
+        $lastline = $_;
+    } else {
+        $l2 = $_;
+        last;
+    }
+}
+$verbose && print "2: $lastline\n";
+
+open(OUT, ">$fnout") or die "Can't open $fnout for writing: $!\n";
+
+$col -= 1; # offset 1
+
+while (1) {
+    my @data1 = split(' ', $l1);
+    my @data2 = split(' ', $l2);
+    my $x = $data1[0];
+    my $y1 = $data1[$col];
+    my $y2 = $data2[$col];
+    
+    $y2 = $y2*$y2; # ATTENTION !!!
+    
+    my $d = $y1-$y2;
+    my $s = "$x $d $y1 $y2\n";
+    $verbose && print $s;
+    print OUT $s;
+
+    $l1 = <F1>;
+    $l1 or last;
+    chomp($l1);
+    $l2 = <F2>;
+    $l2 or die "Failed reading file 2.\n";
+    chomp($l2);
+}
+
+close(OUT);
+

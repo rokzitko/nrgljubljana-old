@@ -1,0 +1,37 @@
+#!/usr/bin/env perl
+# Unpack binary spectral functions.
+# NOTE: Binary output files are not portable!
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, Nov 2008
+
+use strict;
+use warnings;
+
+if (@ARGV == 0) {
+    die "Usage: specunpack <filename1> <filename2> ...\n";
+}
+
+do {
+    my $fn = shift @ARGV;
+    my $fnout = $fn . ".dat";
+    print "Unpacking $fn -> $fnout\n";
+    open (IN, "<$fn") or die "Can't open $fn: $!. Stopped";
+    open (OUT, ">$fnout") or die "Can't open $fnout: $1. Stopped";
+    binmode IN;
+    
+    my $len = -s $fn;
+    my $data;
+    
+    read(IN, $data, $len) or die "Read failed: $!. Stopped";
+    close IN;
+    
+    my @l = unpack("d*", $data);
+    @l % 2 == 0 or die "Weird: Odd number of values. Stopped";
+    
+    my $nr = @l/2;
+    for (my $i = 0; $i < $nr; $i++) {
+	my $e = $l[2*$i];
+	my $w = $l[2*$i+1];
+	print OUT "$e $w\n";
+    }
+    close OUT;
+} while (@ARGV);

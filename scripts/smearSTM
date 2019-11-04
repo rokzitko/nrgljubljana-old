@@ -1,0 +1,59 @@
+#!/usr/bin/env perl
+# Smear a T=0 spectral function with a broadening kernel corresponding
+# to an STS measurement at finite T.
+# Rok Zitko, rok.zitko@ijs.si, Oct 2009
+
+# References:
+# J. Bardeen, PRL 6, 57 (1961)
+# Nagaoka et al., PRL 88, 077205 (2002)
+
+# See also smearSTM.nb
+
+use strict;
+use warnings;
+use Math::Trig;
+
+if (@ARGV != 2) {
+  die "Usage: smearSTM <filename> <T>\n";
+}
+
+my $fn = shift;
+my $T = shift;
+
+open(F, "<$fn") or die "Can't open $fn: $!\n";
+
+my @E;
+my @W;
+
+while(<F>) {
+    chomp;
+    my ($e, $w) = split;
+    push (@E, $e);
+    push (@W, $w);
+}
+
+close(F);
+
+my $len = @E;
+
+sub kernel 
+{
+    my $x1 = shift;
+    my $x2 = shift;
+    my $diff = $x1-$x2;
+    return 1.0/(2.0*$T* (1.0 + cosh($diff/$T)));
+}
+
+# Use the same mesh
+my $x;
+foreach $x (@E) {
+    my $integral = 0.0;
+    for (my $i = 1; $i < $len-1; $i++) {
+	my $e = $E[$i];
+	my $f = $W[$i];
+	my $weight = kernel($e, $x);
+	my $dx = ($E[$i]-$E[$i-1]);
+	$integral += $f * $weight * $dx;
+    }
+    print "$x $integral\n";
+}

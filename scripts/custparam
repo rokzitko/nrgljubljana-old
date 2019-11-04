@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+# Extract last comment line (starting with character #) and last line of the
+# file 'custom'. Append a parameter extracted from file 'param'.
+# Rok Zitko, rok.zitko@ijs.si, April 2008, Sep 2010
+# $Id$
+
+# CHANGE LOG
+# 30.9.2010 - filename may be given as an argument
+
+use warnings;
+use strict;
+
+if (@ARGV < 1) {
+    die "Usage: custparam <param> [custom filename] [param filename]\n";
+}
+
+my $param = shift;
+my $fn = shift;
+my $paramfn = shift;
+
+if (!defined $fn) {
+    $fn = "custom";
+}
+
+if (!defined($paramfn)) {
+    $paramfn = "param";
+}
+
+open (F, "<$fn") or die "Can't open $fn for reading: $!\n";
+
+my $lastcommentline = "";
+my $lastline = "";
+
+while (<F>) {
+  if (/^#/) {
+    $lastcommentline = $_;
+  } else {
+    $lastline = $_;
+  }
+}
+
+my $result = `getparam $param $paramfn`;
+
+chomp($lastline);
+
+print ("$lastcommentline");
+print ("$lastline   $result");

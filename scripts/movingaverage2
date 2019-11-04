@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+# Moving average filter for tabulated data
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, Nov 2008
+
+use warnings;
+
+my $nr = 2;
+my @prev;
+
+while(<>) {
+    if (/^#/) {
+	# Copy comment lines
+	print $_;
+	next;
+     }
+
+    chomp;
+    my @vals = split(' ', $_);
+    
+    if (@prev) {
+	my @sum = @vals;
+	for ($i = 0; $i < @vals; $i++) {
+	    $sum[$i] = $sum[$i] + $prev[$i];
+	}
+	my @avg = @sum;
+	for ($i = 0; $i < @vals; $i++) {
+	    $avg[$i] = $avg[$i]/$nr;
+	}
+	print "@avg\n";
+    }
+    @prev = @vals;
+}

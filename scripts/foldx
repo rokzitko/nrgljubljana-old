@@ -1,0 +1,62 @@
+#!/usr/bin/env perl
+# Fold a tabulated function with respect to the x=0 axis,
+# mirroring data from the negative x to the positive x.
+# The x=0 data point, if present, is not duplicated.
+# On output, there are data points for all x, negative and positive.
+# See also the 'mirror' script.
+# Rok Zitko, rok.zitko@ijs.si, November 2009
+
+use warnings;
+use strict;
+
+# Read data (from stdio, or from files given as the arguments)
+# with negative (or zero) first column, i.e., x.
+
+my @data;
+
+while (<>) {
+    if (/^#/) { next; }
+    chomp;
+    my @vals = split;
+    if ($vals[0] <= 0) {
+      # Flip the sign (!)
+      $vals[0] = abs($vals[0]);
+      # Store the data
+      push (@data, [@vals]);
+    }
+}
+
+# Sort the data in the increasing order
+
+@data = sort { $a->[0] <=> $b->[0] } @data;
+
+# Negative x points
+
+my $nr = @data;
+
+for (my $i = $nr-1; $i >= 0; $i--) {
+    my $len = @{ $data[$i] };
+    for (my $col = 0; $col < $len; $col++) {
+	my $val = $data[$i]->[$col];
+	if ($col == 0) {
+	    $val = -$val;
+	}
+	print $val;
+	if ($col != $len-1) { print " "; }
+    }
+    print "\n";
+}
+
+# Positive x points
+
+my $first = ($data[0]->[0] == 0 ? 1 : 0);
+
+for (my $i = $first; $i < $nr; $i++) {
+    my $len = @{ $data[$i] };
+    for (my $col = 0; $col < $len; $col++) {
+	my $val = $data[$i]->[$col];
+	print $val;
+	if ($col != $len-1) { print " "; }
+    }
+    print "\n";
+}

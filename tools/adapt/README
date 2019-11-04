@@ -1,0 +1,107 @@
+adapt - solver for differential equations which determine the full set of
+discretization coefficients in adaptive logarithmic discretization approach
+in numerical renormalization group
+
+nrgchain - tridiagonalisation code for determining the tight-bidning
+coefficients of the Wilson chain for NRG calculations
+
+Copyright (C) 2008, 2009 Rok Zitko
+
+
+adapt solves the differential equations which determine logarithmic
+discretization coefficients in the form
+
+  epsilon(x) = g(x) Lambda^(2-x),
+  Epsilon(x) = f(x) Lambda^(2-x),
+  
+where epsilon(x) are the discretization mesh points and Epsilon(x) the
+representative energies, while x=j+z is the mesh parameter which combines
+the discretization interval number j=1,2,3,.. and the twist parameter z in
+the interval [0:1]. For more details see
+
+  Rok Zitko: "Adaptive logarithmic discretization for numerical
+  renormalization group methods", Computer Physics Communications (2009).
+
+and
+ 
+  Rok Zitko, Thomas Pruschke: "Energy resolution and discretization
+  artefacts in the numerical renormalization group", 
+  Physical Review B 79, 085106 (2009).
+  
+
+nrgchain determines the coefficients xi (hopping constants) and zeta
+(on-site energies) for a Wilson chain. It takes the output from adapt
+as its input.
+
+
+1. Installation
+
+Modify "Makefile" if necessary, compile using "make" and copy the resulting
+executables (adapt, nrgchain) to an appropriate location.
+
+The discretization equation solver is written in pure ISO C++ without making
+use of any external libraries, therefore it should be highly porable. The
+tridiagonalization code makes use of the GNU MP Bignum library (multiple
+precision), see http://gmplib.org/. (Tested with GMP version 3.0.5.)
+
+
+2a. Usage (adapt)
+
+Usage: adapt [P|N] [parameter_file]
+
+Optional argument P or N specifies whether positive or negative frequency
+part of the density of states is being discretized [default is "P"].
+
+Argument parameter_file specifies which file contains parameters [default is
+"param"].
+
+Consult the sample parameter file for description of the parameters.
+
+
+2b. Usage (nrgchain)
+
+Usage: nrgchain [parameter_file]
+
+Consult the sample parameter file for description of the parameters.
+
+
+3. License
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+	   
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+		       
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+The full text of the GPL General Public License can be found
+in file LICENSE.
+
+
+4. Contact information
+
+"adapt" home-page: http://nrgljubljana.ijs.si/adapt/
+
+Rok Zitko
+"Jozef Stefan" Institute
+F5 - Condensed matter physics
+Jamova 39
+SI-1000 Ljubljana
+Slovenia
+
+rok.zitko@ijs.si
+
+
+5. Acknowledgements
+
+'adapt' solver was developed during author's stay at the Institute for
+theoretical physics, University of Goettingen, Germany. Fruitful discussions
+with prof. Thomas Pruschke, computer support by GWDG, and support by the
+German Science Foundation through SFB 602 are acknowledged.

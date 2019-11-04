@@ -1,0 +1,34 @@
+#!/usr/bin/perl
+# Kondo temperature calculator
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, July 2008
+
+use warnings;
+use strict;
+
+@ARGV == 3 or die "Usage: tkeps <U> <eps> <Gamma>.";
+
+my $u = eval(shift);
+my $eps = eval(shift);
+my $gamma = eval(shift);
+
+print "u=$u\neps=$eps\ngamma=$gamma\n";
+
+my $rhoJ=2*$gamma/(3.14159) * (1/abs($eps) + 1/(abs($u+$eps)));
+
+print "rho_0 J=$rhoJ\n";
+
+my $rhoK=$gamma/(2*3.14159) * (1/abs($eps) - 1/(abs($u+$eps)));
+
+print "rho_0 K=$rhoK\n";
+
+my $rhoJeff = $rhoJ/(1+(3.14159*$rhoK)**2);
+
+print "rho_0 Jeff=$rhoJeff\n";
+
+my $Deff = 0.182 * abs($eps);
+
+print "Deff=$Deff\n";
+
+my $tk = $Deff * sqrt($rhoJ) * exp(-1/$rhoJ);
+
+print "T_K=$tk\n";

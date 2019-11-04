@@ -1,0 +1,24 @@
+#!/usr/bin/env perl
+# Calculate the variance of a series of values.
+# Rok Zitko, rok.zitko@ijs.si, Jan 2009
+
+use strict;
+use warnings;
+
+my $sum1 = 0.0;
+my $sum2 = 0.0;
+my $cnt = 0;
+
+while (<>) {
+  my $x = $_;
+  $sum1 += $x;
+  $sum2 += $x ** 2;
+  $cnt++;
+}
+
+my $mean = $sum1/$cnt;
+my $meansq = $sum2/$cnt;
+
+my $variance = $meansq-$mean**2;
+
+print "$variance\n";

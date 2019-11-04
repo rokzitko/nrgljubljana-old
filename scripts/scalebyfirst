@@ -1,0 +1,16 @@
+#!/usr/bin/perl
+# Scale the second column in tabulated data by the first column
+# Rok Zitko, rok.zitko@ijs.si, Jan 2009
+# $Id$
+
+while (<>) {
+  if (!/^#/) {
+    chomp;
+    @d = split;
+    $d[1] = $d[1] / $d[0];
+    
+    print "@d\n";
+  } else {
+    print;
+  }
+}

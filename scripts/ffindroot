@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+# Find roots using interpolation
+# Rok Zitko, zitko@theorie.physik.uni-goettingen.de, August 2008
+
+use strict;
+use warnings;
+
+if (@ARGV != 2) {
+    print "ffindroot solves f(x)=value, where f is tabulated in a file.\n";
+    die "Usage: ffindroot <filename> <value>\n";
+}
+
+my $fninput = $ARGV[0];
+my $value = $ARGV[1];
+
+my $xprev;
+my $yprev;
+
+my $solution;
+
+open(F, "<$fninput") or die "Can't open $fninput: $!";
+
+while (<F>) {
+    /(\S*)\s+(\S*)/;
+    my $x = $1;
+    my $y = $2;
+
+    if (defined $yprev) {
+      if (($yprev < $value && $value < $y) || ($yprev > $value && $value > $y)) {
+         my $slope = ($yprev - $y)/($xprev - $x);
+	 my $ydiff = $value - $yprev;
+	 my $xdiff = $ydiff/$slope;
+	 $solution = $xdiff + $xprev;
+      }
+    }
+    
+    $xprev = $x;
+    $yprev = $y;        
+}
+
+print "$solution\n";

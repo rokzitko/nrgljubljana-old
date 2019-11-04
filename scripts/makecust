@@ -1,0 +1,19 @@
+#!/usr/bin/perl
+# Extract last comment line (starting with character #) and last line of the
+# file. This is used to extract the T->0 results from "custom" file.
+# Rok Zitko, rok.zitko@ijs.si, April 2008
+# $id$
+
+my $lastcommentline = "";
+my $lastline = "";
+
+while (<>) {
+  if (/^#/) {
+    $lastcommentline = $_;
+  } else {
+    $lastline = $_;
+  }
+}
+
+print ("$lastcommentline");
+print ("$lastline");
